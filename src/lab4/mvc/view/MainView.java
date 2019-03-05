@@ -12,9 +12,9 @@ public class MainView extends JFrame {
         super("MVC");
         setLayout(new BorderLayout());
         TablePanel tablePanel = new TablePanel();
-        tablePanel.setPreferredSize(new Dimension(200, this.getHeight()));
-        tablePanel.setSize(new Dimension(200, this.getHeight()));
-        add(new TablePanel(), BorderLayout.WEST);
+        tablePanel.setPreferredSize(new Dimension(600, this.getHeight()));
+        tablePanel.setSize(new Dimension(600, this.getHeight()));
+        add(tablePanel, BorderLayout.WEST);
 
         GraphPanel graphPanel = new GraphPanel();
         graphPanel.setPreferredSize(new Dimension(600, this.getHeight()));

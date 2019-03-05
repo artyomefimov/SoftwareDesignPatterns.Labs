@@ -57,11 +57,7 @@ public class Controller {
             return value;
         }
         try {
-            value = Double.parseDouble(text);
-//            if (isPower && value < 2.0) {
-//                throw new NumberFormatException("Function should be quadratic!");
-//            }
-            return value;
+            return Double.parseDouble(text);
         } catch (NumberFormatException e) {
             if (isPower)
                 field.setText("2");
@@ -80,8 +76,8 @@ public class Controller {
             pair.y = function.countY(pair.x);
         }
 
-        redraw();
         model.setValues(pairs);
+        redraw();
     }
 
     public void addYAndDraw(int row, PairXY<Double, Double> pair) {
@@ -118,7 +114,7 @@ public class Controller {
                 builder.append(pair.y);
             builder.append(',');
         }
-        return builder.toString().substring(0, builder.length() - 1);
+        return builder.toString().isEmpty() ? "" : builder.toString().substring(0, builder.length() - 1);
     }
 
     private void runPythonScript(String args) throws Exception {
@@ -136,5 +132,23 @@ public class Controller {
 
     public void setTableModel(ValuesTableModel model) {
         this.model = model;
+    }
+
+    public void deleteRows(int rowToDelete) {
+        if (rowToDelete >= pairs.size())
+            return;
+        Map<Integer, PairXY<Double, Double>> newPairs = new HashMap<>();
+        for (Map.Entry<Integer, PairXY<Double, Double>> entry : pairs.entrySet()) {
+            if (entry.getKey() < rowToDelete)
+                newPairs.put(entry.getKey(), entry.getValue());
+            else if (entry.getKey() >= rowToDelete) {
+                if (entry.getKey() < pairs.size() - 1)
+                    newPairs.put(entry.getKey(), pairs.get(entry.getKey() + 1));
+            }
+        }
+
+        pairs = newPairs;
+        redraw();
+        model.removeRow(pairs, rowToDelete);
     }
 }

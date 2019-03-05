@@ -15,21 +15,26 @@ public class Observer {
     public static final String RIGHT_EYE_CLOSED = "RIGHT EYE CLOSED";
     public static final String MOUTH_OPENED = "MOUTH OPENED";
     public static final String MOUTH_CLOSED = "MOUTH CLOSED";
+    public static final String NOSE_BLACK = "NOSE_BLACK";
+    public static final String NOSE_RED = "NOSE_RED";
 
     private Ellipse2D leftEyeOpened;
     private Ellipse2D rightEyeOpened;
     private Ellipse2D mouthOpened;
+    private Rectangle2D noseBlack;
 
     private Rectangle2D leftEyeClosed;
     private Rectangle2D rightEyeClosed;
     private Rectangle2D mouthClosed;
+    private Rectangle2D noseRed;
 
     private Map<String, Shape> shapes;
 
-    public Observer(Ellipse2D leftEyeOpened, Ellipse2D rightEyeOpened, Ellipse2D mouthOpened) {
+    public Observer(Ellipse2D leftEyeOpened, Ellipse2D rightEyeOpened, Ellipse2D mouthOpened, Rectangle2D noseBlack) {
         this.leftEyeOpened = leftEyeOpened;
         this.rightEyeOpened = rightEyeOpened;
         this.mouthOpened = mouthOpened;
+        this.noseBlack = noseBlack;
         leftEyeClosed = new Rectangle2D.Double(
                 leftEyeOpened.getMinX(), leftEyeOpened.getCenterY(),
                 leftEyeOpened.getWidth(), 1);
@@ -39,6 +44,10 @@ public class Observer {
         mouthClosed = new Rectangle2D.Double(
                 mouthOpened.getMinX(), mouthOpened.getCenterY(),
                 mouthOpened.getWidth(), 1);
+
+        noseRed = new Rectangle2D.Double(
+                noseBlack.getMinX(), noseBlack.getMinY(),
+                noseBlack.getWidth(), noseBlack.getHeight());
 
         shapes = new HashMap<>();
         shapes.put(LEFT_EYE_OPENED, this.leftEyeOpened);
@@ -59,6 +68,10 @@ public class Observer {
             return fromPanel.get(MOUTH_OPENED) != null ?
                     makeShapeList(MOUTH_OPENED, MOUTH_CLOSED, mouthClosed, fromPanel) :
                     makeShapeList(MOUTH_CLOSED, MOUTH_OPENED, mouthOpened, fromPanel);
+        } else if (isClickedOn(noseBlack, e)) {
+            return fromPanel.get(NOSE_BLACK) != null ?
+                    makeShapeList(NOSE_BLACK, NOSE_RED, noseRed, fromPanel) :
+                    makeShapeList(NOSE_RED, NOSE_BLACK, noseBlack, fromPanel);
         } else return fromPanel;
     }
 

@@ -164,24 +164,20 @@ public class Student implements Pupil, Cloneable, Serializable {
     }
 
     public static class StudentMemento {
-        private static final String FILENAME = "src/lab3/memento.txt";
-        private static ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        private static byte[] byteMemento;
 
         public static void setStudent(Student student) throws IOException {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
-                oos.writeObject(student.surname);
-                oos.writeObject(student.marks);
-                oos.writeObject(student.subjects);
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                 ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+                oos.writeObject(student);
+                byteMemento = bos.toByteArray();
             }
         }
 
         public static Student getStudent() throws IOException, ClassNotFoundException {
             Student student;
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILENAME))) {
-                student = new Student("1", 0);
-                student.surname = (String) ois.readObject();
-                student.marks = (int[]) ois.readObject();
-                student.subjects = (String[]) ois.readObject();
+            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(byteMemento))) {
+                student = ((Student) ois.readObject());
             }
             return student;
         }

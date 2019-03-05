@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,13 +84,27 @@ public class FacePanel extends JPanel {
                     rightEyeOpened.getMinX() - leftEyeOpened.getMaxX(),
                     (double) getHeight() / 16);
             shapes.put(MOUTH_OPENED, mouthOpened);
-            observer = new Observer(leftEyeOpened, rightEyeOpened, mouthOpened);
+            Rectangle2D noseBlack = new Rectangle2D.Double(
+                    leftEyeOpened.getMaxX() + (rightEyeOpened.getMinX() - leftEyeOpened.getMaxX())/3 + 6,
+                    (double) getHeight() * 3 / 5 - 2*(double) getHeight() / 16,
+                    (rightEyeOpened.getMinX() - leftEyeOpened.getMaxX()) / 4,
+                    (double) getHeight() * 3 / 5 - (double) getHeight() / 2
+            );
+            shapes.put(NOSE_BLACK, noseBlack);
+            observer = new Observer(leftEyeOpened, rightEyeOpened, mouthOpened, noseBlack);
             isFirst = false;
         }
 
         for (Map.Entry<String, Shape> entry : shapes.entrySet()) {
-            if (entry.getValue() != null)
-                g2d.fill(entry.getValue());
+            if (entry.getValue() != null) {
+                if (entry.getKey().equals(NOSE_RED)) {
+                    g2d.setColor(Color.red);
+                    g2d.fill(entry.getValue());
+                    g2d.setColor(Color.black);
+                }
+                else
+                    g2d.fill(entry.getValue());
+            }
         }
     }
 }

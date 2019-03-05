@@ -57,9 +57,8 @@ public class ValuesTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex == 1)
             fireTableCellUpdated(rowIndex, columnIndex);
-        else {
+        else
             countXY(aValue, rowIndex, columnIndex);
-        }
     }
 
     private void countXY(Object aValue, int rowIndex, int columnIndex) {
@@ -76,6 +75,10 @@ public class ValuesTableModel extends AbstractTableModel {
 
     public void setValues(Map<Integer, PairXY<Double, Double>> values) {
         this.values = values;
-        fireTableDataChanged();
+    }
+
+    public void removeRow(Map<Integer, PairXY<Double, Double>> pairs, int row) {
+        this.values = pairs;
+        fireTableRowsDeleted(row, row);
     }
 }
