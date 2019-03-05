@@ -1,4 +1,4 @@
-Implementation of th following software design patterns:
+Implementation of the following software design patterns:
   Singleton,
   Factory Method,
   Prototype,
