@@ -1,0 +1,2 @@
+Schoolboy;Petrov;2;[4, 5];[Programming, History];
+Student;Ivanov;4;[4, 3, 4, 5];[Mathematics, Physics, English, History];
